@@ -2,8 +2,8 @@ package com.learn.maksymgromov.learnui;
 
 import android.support.v4.app.Fragment;
 
-import com.learn.maksymgromov.learnui.Framents.DashboardFragment;
-import com.learn.maksymgromov.learnui.Framents.HomeFragment;
+import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
+import com.learn.maksymgromov.learnui.Fragments.HomeFragment;
 
 public class FragmentFactory {
     public static Fragment newInstance(String fragmentType) {

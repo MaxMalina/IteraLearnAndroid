@@ -1,4 +1,4 @@
-package com.learn.maksymgromov.learnui.Framents;
+package com.learn.maksymgromov.learnui.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

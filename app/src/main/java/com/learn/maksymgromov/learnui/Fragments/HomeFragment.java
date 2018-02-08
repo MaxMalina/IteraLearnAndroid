@@ -1,4 +1,4 @@
-package com.learn.maksymgromov.learnui.Framents;
+package com.learn.maksymgromov.learnui.Fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -29,14 +29,9 @@ public class HomeFragment extends Fragment{
         RecyclerView mHomeRecyclerView = view.findViewById(R.id.home_recycler_view);
         mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-        //TODO: json file
         InputStream inputStream = getResources().openRawResource(R.raw.file);
         String jsonText = readTextFile(inputStream);
-
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        ArrayList<String>data = gson.fromJson(jsonText, ArrayList.class);
+        ArrayList<String>data = parseJsonStringToArrayListString(jsonText);
 
         HomeDataAdapter mAdapter = new HomeDataAdapter(data);
         mHomeRecyclerView.setAdapter(mAdapter);
@@ -58,5 +53,11 @@ public class HomeFragment extends Fragment{
             e.printStackTrace();
         }
         return total.toString();
+    }
+
+    private ArrayList<String> parseJsonStringToArrayListString(String jsonText) {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        return gson.fromJson(jsonText, ArrayList.class);
     }
 }
