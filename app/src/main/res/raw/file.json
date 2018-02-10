@@ -1,1 +1,23 @@
-["sample text","sample text","sample text","sample text","sample text","sample text","sample text","sample text"]
+[
+  {
+    "vin" : "WVWBP7AN0DE502295",
+    "style" : "Sedan",
+    "model" : "VOLKSWAGEN CC",
+    "series" : "SPORT",
+    "engineLiters" : 2.5,
+    "fuelType" : "Gasoline",
+    "driveLineType" : "Front",
+    "color" : "blue"
+  },
+
+  {
+    "vin" : "WAUBGAFL4EA028426",
+    "style" : "Sedan",
+    "model" : "AUDI S4",
+    "series" : "PREMIUM PLUS",
+    "engineLiters" : 3.0,
+    "fuelType" : "Gasoline",
+    "driveLineType" : "All",
+    "color" : "black"
+  }
+]

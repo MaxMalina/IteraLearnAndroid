@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 SwitchFragment(getResources().getString(R.string.title_home), fm);
