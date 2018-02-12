@@ -64,5 +64,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.enableShiftingMode(false);
         navigation.enableItemShiftingMode(false);
         navigation.setTextVisibility(false);
+        navigation.setItemIconTintList(null);
     }
 }

@@ -1,5 +1,5 @@
-package com.learn.maksymgromov.learnui.Model;
+package com.learn.maksymgromov.learnui.Model.CarAttributes;
 
-enum BodyStyle {
+public enum BodyStyle {
     SUV, Truck, Sedan, Van, Couple, Wagon, Convertible, SportsCar, Diesel, Crossover, HybridElectric
 }

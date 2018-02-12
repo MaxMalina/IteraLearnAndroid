@@ -1,6 +1,13 @@
 package com.learn.maksymgromov.learnui.Model;
 
-public class Car {
+import com.google.gson.internal.LinkedTreeMap;
+import com.learn.maksymgromov.learnui.Model.CarAttributes.BodyStyle;
+import com.learn.maksymgromov.learnui.Model.CarAttributes.DriveLineType;
+import com.learn.maksymgromov.learnui.Model.CarAttributes.FuelType;
+
+import java.io.Serializable;
+
+public class Car implements Serializable {
     private String vin;
     private BodyStyle style;
     private String model;
@@ -9,6 +16,8 @@ public class Car {
     private FuelType fuelType;
     private DriveLineType driveLineType;
     private String color;
+
+    private Car() {}
 
     public Car(String vin, BodyStyle style, String model, String series, double engineLiters, FuelType fuelType, DriveLineType driveLineType, String color) {
         this.vin = vin;
@@ -19,6 +28,21 @@ public class Car {
         this.fuelType = fuelType;
         this.driveLineType = driveLineType;
         this.color = color;
+    }
+
+    public static Car convertToCar(LinkedTreeMap<String, String> linkedTreeMap) {
+        Car car = new Car();
+
+        car.setVin(linkedTreeMap.get("vin"));
+        car.setStyle(BodyStyle.valueOf(linkedTreeMap.get("style")));
+        car.setModel(linkedTreeMap.get("model"));
+        car.setSeries(linkedTreeMap.get("series"));
+        car.setEngineLiters((double) ((Object) linkedTreeMap.get("engineLiters")));
+        car.setFuelType(FuelType.valueOf(linkedTreeMap.get("fuelType")));
+        car.setDriveLineType(DriveLineType.valueOf(linkedTreeMap.get("driveLineType")));
+        car.setColor(linkedTreeMap.get("color"));
+
+        return car;
     }
 
     public String getVin() {

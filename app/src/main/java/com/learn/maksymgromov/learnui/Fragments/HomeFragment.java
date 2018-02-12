@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
+import com.learn.maksymgromov.learnui.Model.Car;
 import com.learn.maksymgromov.learnui.R;
 
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ public class HomeFragment extends Fragment{
 
         InputStream inputStream = getResources().openRawResource(R.raw.file);
         String jsonText = readTextFile(inputStream);
-        ArrayList<String>data = parseJsonStringToArrayListString(jsonText);
+        ArrayList<Car>data = parseJsonStringToArrayListString(jsonText);
 
         HomeDataAdapter mAdapter = new HomeDataAdapter(data);
         mHomeRecyclerView.setAdapter(mAdapter);
@@ -55,9 +57,17 @@ public class HomeFragment extends Fragment{
         return total.toString();
     }
 
-    private ArrayList<String> parseJsonStringToArrayListString(String jsonText) {
+    private ArrayList<Car> parseJsonStringToArrayListString(String jsonText) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        return gson.fromJson(jsonText, ArrayList.class);
+
+        ArrayList<LinkedTreeMap<String, String>>  linkedTreeMaps = gson.fromJson(jsonText, ArrayList.class);
+        ArrayList<Car> cars = new ArrayList<>();
+
+        for (LinkedTreeMap<String, String> linkedTreeMap : linkedTreeMaps) {
+            cars.add(Car.convertToCar(linkedTreeMap));
+        }
+
+        return cars;
     }
 }
