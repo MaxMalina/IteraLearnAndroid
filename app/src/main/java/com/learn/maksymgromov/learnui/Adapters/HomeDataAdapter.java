@@ -7,18 +7,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.learn.maksymgromov.learnui.FragmentFactory;
-import com.learn.maksymgromov.learnui.Holders.HomeDataHolder;
 import com.learn.maksymgromov.learnui.Model.Car;
 import com.learn.maksymgromov.learnui.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataHolder> implements View.OnClickListener {
+public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDataHolder> {
     private List<Car> mDataList;
     private Car currentCar;
+
 
     public HomeDataAdapter(ArrayList<Car> data) {
         mDataList = data;
@@ -30,14 +31,30 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataHolder> implem
         View view = layoutInflater
                 .inflate(android.R.layout.simple_list_item_1, parent, false);
 
-        return new HomeDataHolder(view);
+        return new HomeDataHolder(view, new HomeDataHolder.IMyViewHolderClicks() {
+            public void onCarModel(View caller) {
+                AppCompatActivity activity = (AppCompatActivity)caller.getContext();
+                android.support.v4.app.FragmentManager fm = activity.getSupportFragmentManager();
+
+                Bundle args = new Bundle();
+
+                args.putSerializable("CAR", currentCar);
+                Fragment fragment = FragmentFactory.newInstance("INFO");
+
+                fragment.setArguments(args);
+
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack("fragBack")
+                        .commit();
+            }
+        });
     }
 
     @Override
     public void onBindViewHolder(HomeDataHolder holder, int position) {
         currentCar = mDataList.get(position);
         holder.mTextView.setText(currentCar.getModel());
-        holder.mTextView.setOnClickListener(this);
     }
 
     @Override
@@ -45,20 +62,27 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataHolder> implem
         return mDataList.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        AppCompatActivity activity = (AppCompatActivity)v.getContext();
+    public static class HomeDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView mTextView;
+        private IMyViewHolderClicks mListener;
 
-        android.support.v4.app.FragmentManager fm = activity.getSupportFragmentManager();
+        public HomeDataHolder(View itemView, IMyViewHolderClicks listener) {
+            super(itemView);
 
-        Bundle args = new Bundle();
-        args.putSerializable("CAR", currentCar);
-        Fragment fragment = FragmentFactory.newInstance("INFO");
+            mTextView = (TextView) itemView;
+            mListener = listener;
+            mTextView.setOnClickListener(this);
+        }
 
-        fragment.setArguments(args);
+        @Override
+        public void onClick(View v) {
+            if (v instanceof TextView){
+                mListener.onCarModel(v);
+            }
+        }
 
-        fm.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+        public interface IMyViewHolderClicks {
+            void onCarModel(View caller);
+        }
     }
 }

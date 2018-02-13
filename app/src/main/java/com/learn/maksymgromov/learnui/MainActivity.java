@@ -13,6 +13,10 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener {
 
     private TextView mTextMessage;
+    private BottomNavigationViewEx navigation;
+
+    private static final float NORMAL_SIZE = 24;
+    private static final float ACTIVE_SIZE = 31;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,36 +24,50 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
 
         mTextMessage = findViewById(R.id.message);
-        BottomNavigationViewEx navigation = findViewById(R.id.navigation);
-        ConfigBottomNavigationViewEx(navigation);
-
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        navigation = findViewById(R.id.navigation);
+        initBottomNavigationViewEx();
         Fragment fragment = FragmentFactory.newInstance("HOME");
 
-        fm.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
             .add(R.id.fragment_container, fragment)
             .commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                SwitchFragment(getResources().getString(R.string.title_home), fm);
+                switchFragment(getResources().getString(R.string.title_home), getSupportFragmentManager());
+                item.setIcon(R.drawable.loyalty_active);
+                navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
+                navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
+
+                changeIconsSize(0);
                 return true;
             case R.id.navigation_dashboard:
-                SwitchFragment(getResources().getString(R.string.title_dashboard), fm);
+                switchFragment(getResources().getString(R.string.title_dashboard), getSupportFragmentManager());
+                item.setIcon(R.drawable.wallet_active);
+                navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
+                navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
+
+                changeIconsSize(1);
                 return true;
             case R.id.navigation_notifications:
-                SwitchFragment(getResources().getString(R.string.title_notifications), fm);
+                switchFragment(getResources().getString(R.string.title_notifications), getSupportFragmentManager());
+                item.setIcon(R.drawable.more_actions_active);
+                navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
+                navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
+
+                changeIconsSize(2);
                 return true;
+            default:
+                return false;
         }
-        return false;
+        //return false;
     }
 
-    private void SwitchFragment(String itemTitle, FragmentManager fragmentManager) {
+    private void switchFragment(String itemTitle, FragmentManager fragmentManager) {
         mTextMessage.setText(itemTitle);
 
         Fragment fragment = FragmentFactory.newInstance(itemTitle);
@@ -58,12 +76,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .commit();
     }
 
-    private void ConfigBottomNavigationViewEx(BottomNavigationViewEx navigation){
-        navigation.setOnNavigationItemSelectedListener(this);
+    private void initBottomNavigationViewEx() {
+        navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_active);
+
+        navigation.setIconSize(NORMAL_SIZE,NORMAL_SIZE);
+        navigation.setIconSizeAt(0, ACTIVE_SIZE, ACTIVE_SIZE);
+
         navigation.enableAnimation(false);
         navigation.enableShiftingMode(false);
         navigation.enableItemShiftingMode(false);
         navigation.setTextVisibility(false);
         navigation.setItemIconTintList(null);
+
+        navigation.setOnNavigationItemSelectedListener(this);
+    }
+
+    private void changeIconsSize(int positionToActive) {
+        navigation.setIconSize(NORMAL_SIZE, NORMAL_SIZE);
+        navigation.setIconSizeAt(positionToActive, ACTIVE_SIZE, ACTIVE_SIZE);
     }
 }

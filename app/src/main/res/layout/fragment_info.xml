@@ -6,41 +6,49 @@
     <TextView
         android:id = "@+id/vin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/style"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/model"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/series"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/engineLitres"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/fuelType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/driveLineType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
     <TextView
         android:id = "@+id/color"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"/>
 
 </LinearLayout>
