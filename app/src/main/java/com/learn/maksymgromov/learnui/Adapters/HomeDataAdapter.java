@@ -18,8 +18,6 @@ import java.util.List;
 
 public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDataHolder> {
     private List<Car> mDataList;
-    private Car currentCar;
-
 
     public HomeDataAdapter(ArrayList<Car> data) {
         mDataList = data;
@@ -31,30 +29,13 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDa
         View view = layoutInflater
                 .inflate(android.R.layout.simple_list_item_1, parent, false);
 
-        return new HomeDataHolder(view, new HomeDataHolder.IMyViewHolderClicks() {
-            public void onCarModel(View caller) {
-                AppCompatActivity activity = (AppCompatActivity)caller.getContext();
-                android.support.v4.app.FragmentManager fm = activity.getSupportFragmentManager();
-
-                Bundle args = new Bundle();
-
-                args.putSerializable("CAR", currentCar);
-                Fragment fragment = FragmentFactory.newInstance("INFO");
-
-                fragment.setArguments(args);
-
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .addToBackStack("fragBack")
-                        .commit();
-            }
-        });
+        return new HomeDataHolder(view);
     }
 
     @Override
     public void onBindViewHolder(HomeDataHolder holder, int position) {
-        currentCar = mDataList.get(position);
-        holder.mTextView.setText(currentCar.getModel());
+        Car car = mDataList.get(position);
+        holder.bindCar(car);
     }
 
     @Override
@@ -63,26 +44,35 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDa
     }
 
     public static class HomeDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private Car mCar;
         private TextView mTextView;
-        private IMyViewHolderClicks mListener;
 
-        public HomeDataHolder(View itemView, IMyViewHolderClicks listener) {
+        public HomeDataHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView;
-            mListener = listener;
             mTextView.setOnClickListener(this);
+        }
+
+        private void bindCar(Car car) {
+            mCar = car;
+            mTextView.setText(mCar.getModel());
         }
 
         @Override
         public void onClick(View v) {
-            if (v instanceof TextView){
-                mListener.onCarModel(v);
-            }
-        }
+            AppCompatActivity activity = (AppCompatActivity)v.getContext();
 
-        public interface IMyViewHolderClicks {
-            void onCarModel(View caller);
+            Bundle args = new Bundle();
+            args.putSerializable("CAR", mCar);
+
+            Fragment fragment = FragmentFactory.newInstance("INFO");
+            fragment.setArguments(args);
+
+            activity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack("fragBack")
+                    .commit();
         }
     }
 }
