@@ -29,7 +29,6 @@ gen-external-apklibs/
 .gradle/
 build/
 app/build/
-build.gradle
 
 # Local configuration file (sdk path, etc)
 local.properties

@@ -10,15 +10,18 @@ import android.widget.TextView;
 import com.learn.maksymgromov.learnui.Model.Car;
 import com.learn.maksymgromov.learnui.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class InfoFragment extends Fragment {
-    private TextView mVin;
-    private TextView mStyle;
-    private TextView mModel;
-    private TextView mSeries;
-    private TextView mEngineLiters;
-    private TextView mFuelType;
-    private TextView mDriveLineType;
-    private TextView mColor;
+    @BindView(R.id.vin) TextView mVin;
+    @BindView(R.id.style) TextView mStyle;
+    @BindView(R.id.model) TextView mModel;
+    @BindView(R.id.series) TextView mSeries;
+    @BindView(R.id.engineLitres) TextView mEngineLiters;
+    @BindView(R.id.fuelType) TextView mFuelType;
+    @BindView(R.id.driveLineType) TextView mDriveLineType;
+    @BindView(R.id.color) TextView mColor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,18 +29,10 @@ public class InfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_info, container,
                 false);
 
-        if(getArguments()!= null)
-        {
-            Car car = (Car) getArguments().getSerializable("CAR");
+        ButterKnife.bind(this, view);
 
-            mVin = view.findViewById(R.id.vin);
-            mStyle = view.findViewById(R.id.style);
-            mModel = view.findViewById(R.id.model);
-            mSeries = view.findViewById(R.id.series);
-            mEngineLiters = view.findViewById(R.id.engineLitres);
-            mFuelType = view.findViewById(R.id.fuelType);
-            mDriveLineType = view.findViewById(R.id.driveLineType);
-            mColor = view.findViewById(R.id.color);
+        if(getArguments()!= null) {
+            Car car = (Car) getArguments().getSerializable("CAR");
 
             mVin.setText(car.getVin());
             mStyle.setText(car.getStyle().toString());

@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener {
 
-    private TextView mTextMessage;
-    private BottomNavigationViewEx navigation;
+    @BindView(R.id.message) TextView mTextMessage;
+    @BindView(R.id.navigation) BottomNavigationViewEx navigation;
 
     private static final float NORMAL_SIZE = 24;
     private static final float ACTIVE_SIZE = 31;
@@ -22,9 +25,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        mTextMessage = findViewById(R.id.message);
-        navigation = findViewById(R.id.navigation);
         initBottomNavigationViewEx();
         Fragment fragment = FragmentFactory.newInstance("HOME");
 
