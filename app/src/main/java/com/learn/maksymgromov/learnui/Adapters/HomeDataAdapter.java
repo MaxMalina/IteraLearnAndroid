@@ -1,5 +1,6 @@
 package com.learn.maksymgromov.learnui.Adapters;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,7 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDa
         return mDataList.size();
     }
 
-    public static class HomeDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class HomeDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private Car mCar;
         private TextView mTextView;
 
@@ -52,6 +53,7 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDa
 
             mTextView = (TextView) itemView;
             mTextView.setOnClickListener(this);
+            mTextView.setOnLongClickListener(this);
         }
 
         private void bindCar(Car car) {
@@ -73,6 +75,12 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.HomeDa
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack("fragBack")
                     .commit();
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            v.setBackgroundColor(Color.CYAN);
+            return false;
         }
     }
 }
