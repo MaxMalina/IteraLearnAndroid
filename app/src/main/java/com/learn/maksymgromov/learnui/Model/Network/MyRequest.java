@@ -13,17 +13,20 @@ import retrofit2.Retrofit;
 
 public class MyRequest {
 
-    private static String stringResponse;
+    private  static  final String url = "http://172.16.33.183:3000";
 
-    public static String getRequest(String baseUrl, String url) {
-        Request request = new Request.Builder()
-                .url(url)
+    private MyCallBack callBack;
+    private Retrofit retrofit;
+
+    public MyRequest(MyCallBack myCallBack) {
+        this.callBack = myCallBack;
+        retrofit = new Retrofit.Builder()
+                .baseUrl(url)
                 .build();
+    }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .build();
-
+    public void getRequest() {
+        Request request = new Request.Builder().url(url + "/cars/").build();
         retrofit.callFactory().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -33,11 +36,13 @@ public class MyRequest {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.v("GET", "OK");
-                stringResponse = response.body().string();
+                callBack.processResponce(response.body().string());
             }
         });
+    }
 
-        return stringResponse;
+    public interface MyCallBack {
+        String processResponce(String response);
     }
 
 }
