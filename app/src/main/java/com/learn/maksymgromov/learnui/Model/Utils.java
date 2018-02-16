@@ -36,7 +36,7 @@ public class Utils {
         return total.toString();
     }
 
-    private static ArrayList<Car> parseJsonStringToArrayListString(String jsonText) {
+    public static ArrayList<Car> parseJsonStringToArrayListString(String jsonText) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 

@@ -6,6 +6,7 @@ import com.learn.maksymgromov.learnui.Model.CarAttributes.DriveLineType;
 import com.learn.maksymgromov.learnui.Model.CarAttributes.FuelType;
 
 import java.io.Serializable;
+import java.net.URL;
 
 public class Car implements Serializable {
     private String vin;
@@ -16,10 +17,11 @@ public class Car implements Serializable {
     private FuelType fuelType;
     private DriveLineType driveLineType;
     private String color;
+    private String photoLink;
 
     private Car() {}
 
-    public Car(String vin, BodyStyle style, String model, String series, double engineLiters, FuelType fuelType, DriveLineType driveLineType, String color) {
+    public Car(String vin, BodyStyle style, String model, String series, double engineLiters, FuelType fuelType, DriveLineType driveLineType, String color, String photoLink) {
         this.vin = vin;
         this.style = style;
         this.model = model;
@@ -28,6 +30,7 @@ public class Car implements Serializable {
         this.fuelType = fuelType;
         this.driveLineType = driveLineType;
         this.color = color;
+        this.photoLink = photoLink;
     }
 
     public static Car convertToCar(LinkedTreeMap<String, String> linkedTreeMap) {
@@ -41,6 +44,7 @@ public class Car implements Serializable {
         car.setFuelType(FuelType.valueOf(linkedTreeMap.get("fuelType")));
         car.setDriveLineType(DriveLineType.valueOf(linkedTreeMap.get("driveLineType")));
         car.setColor(linkedTreeMap.get("color"));
+        car.setPhotoLink(linkedTreeMap.get("photoLink"));
 
         return car;
     }
@@ -107,6 +111,14 @@ public class Car implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
     }
 
 }

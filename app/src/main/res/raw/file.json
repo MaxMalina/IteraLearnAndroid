@@ -7,7 +7,8 @@
     "engineLiters" : 2.5,
     "fuelType" : "Gasoline",
     "driveLineType" : "Front",
-    "color" : "blue"
+    "color" : "blue",
+    "photoLink" : "https://ca2aa017e12ea0c237ac-e39177504a33715df650d54a76bf6030.ssl.cf1.rackcdn.com/vid24091058_v1AUTH_svc.pdoc00001PIX116a96f6eee-43de-46b3-b8d0-9dc7ee88ffb4.JPG__shadowbox.jpg"
   },
 
   {
@@ -18,6 +19,7 @@
     "engineLiters" : 3.0,
     "fuelType" : "Gasoline",
     "driveLineType" : "All",
-    "color" : "black"
+    "color" : "black",
+    "photoLink" : "https://st.salvagebid.com/30708/628025156-6L.jpg"
   }
 ]

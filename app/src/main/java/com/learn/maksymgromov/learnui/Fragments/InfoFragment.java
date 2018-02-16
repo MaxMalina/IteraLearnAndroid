@@ -22,6 +22,7 @@ public class InfoFragment extends Fragment {
     @BindView(R.id.fuelType) TextView mFuelType;
     @BindView(R.id.driveLineType) TextView mDriveLineType;
     @BindView(R.id.color) TextView mColor;
+    @BindView(R.id.photoLink) TextView mPhotoLink;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +43,7 @@ public class InfoFragment extends Fragment {
             mFuelType.setText(car.getFuelType().toString());
             mDriveLineType.setText(car.getDriveLineType().toString());
             mColor.setText(car.getColor());
+            mPhotoLink.setText(car.getPhotoLink());
         }
 
         return view;
