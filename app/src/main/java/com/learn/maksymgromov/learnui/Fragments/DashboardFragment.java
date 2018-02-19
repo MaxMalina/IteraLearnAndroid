@@ -1,5 +1,6 @@
 package com.learn.maksymgromov.learnui.Fragments;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,8 @@ import butterknife.ButterKnife;
 public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private RequestClient requestClient;
     private ArrayList<Car> mData;
+    private SearchListener mSearchListener;
+    private DashboardAdapter mAdapter;
 
     @BindView(R.id.dashboard_recycler_view) RecyclerView mDashboardRecyclerView;
     @BindView(R.id.dashboard_layout) SwipeRefreshLayout mSwipeRefreshLayout;
@@ -55,6 +58,14 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         new RequestTask().execute();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof SearchListener) {
+            mSearchListener = (SearchListener) context;
+        }
+    }
+
     class RequestTask extends AsyncTask<String, Integer, String>  {
 
         @Override
@@ -65,9 +76,18 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         @Override
         protected void onPostExecute(String string) {
             mData = Utils.parseJsonStringToArrayListString(string);
-            mDashboardRecyclerView.setAdapter(new DashboardAdapter(mData));
+            mAdapter = new DashboardAdapter(mData);
+            mDashboardRecyclerView.setAdapter(mAdapter);
 
             mSwipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    public void beginSearch(String query) {
+        mAdapter.getFilter().filter(query);
+    }
+
+    public interface SearchListener {
+        void onSearch();
     }
 }

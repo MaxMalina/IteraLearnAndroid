@@ -11,10 +11,7 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#F44336"
-        android:elevation="4dp">
-        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+        android:background="#F44336">
 
         <TextView
             android:id="@+id/message"
@@ -27,6 +24,12 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" />
+
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -34,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:background="@color/colorPrimary"
+        android:background="#FFF"
         app:layout_constraintWidth_default="wrap"
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintTop_toBottomOf="@id/my_toolbar"
