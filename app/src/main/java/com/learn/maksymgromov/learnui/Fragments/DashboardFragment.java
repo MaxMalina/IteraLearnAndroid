@@ -3,6 +3,7 @@ package com.learn.maksymgromov.learnui.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,11 +25,12 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private RequestClient requestClient;
     private ArrayList<Car> mData;
 
     @BindView(R.id.dashboard_recycler_view) RecyclerView mDashboardRecyclerView;
+    @BindView(R.id.dashboard_layout) SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,12 +40,24 @@ public class DashboardFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
         mDashboardRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         requestClient = new RequestClient();
         new RequestTask().execute();
 
         return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        mDashboardRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        requestClient = new RequestClient();
+        new RequestTask().execute();
+
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     class RequestTask extends AsyncTask<String, Integer, String>  {
@@ -62,13 +76,6 @@ public class DashboardFragment extends Fragment {
         protected void onPostExecute(String string) {
             mData = Utils.parseJsonStringToArrayListString(string);
             mDashboardRecyclerView.setAdapter(new DashboardAdapter(mData));
-            /*ArrayList<Car> cars = Utils.parseJsonStringToArrayListString(string);
-
-            mCarModelVolksvagenTextView.setText(cars.get(0).getModel());
-            Picasso.with(getContext()).load(cars.get(0).getPhotoLink()).into(mPhotoVolksvagen);
-
-            mCarModelAudiTextView.setText(cars.get(1).getModel());
-            Picasso.with(getContext()).load(cars.get(1).getPhotoLink()).into(mPhotoAudi);*/
         }
     }
 }
