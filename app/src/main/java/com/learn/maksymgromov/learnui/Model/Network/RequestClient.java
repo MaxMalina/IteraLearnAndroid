@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
 
 public class RequestClient {
 
-    private  static  final String url = "http://172.16.33.176:3000";
+    private  static  final String url = "http://172.16.33.213:3000";
 
     private Retrofit retrofit;
 

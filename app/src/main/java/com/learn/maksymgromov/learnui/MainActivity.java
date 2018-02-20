@@ -51,9 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                DashboardFragment dashboardFragment = (DashboardFragment) getCurrentFragment();
-                dashboardFragment.beginSearch(newText);
-
+                onQueryTextSubmit(newText);
                 return false;
             }
         });
