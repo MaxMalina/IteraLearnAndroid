@@ -40,8 +40,10 @@ public class Utils {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        ArrayList<LinkedTreeMap<String, String>>  linkedTreeMaps = gson.fromJson(jsonText, ArrayList.class);
         ArrayList<Car> cars = new ArrayList<>();
+        if (jsonText.equals("")) return cars;
+
+        ArrayList<LinkedTreeMap<String, String>>  linkedTreeMaps = gson.fromJson(jsonText, ArrayList.class);
 
         for (LinkedTreeMap<String, String> linkedTreeMap : linkedTreeMaps) {
             cars.add(Car.convertToCar(linkedTreeMap));

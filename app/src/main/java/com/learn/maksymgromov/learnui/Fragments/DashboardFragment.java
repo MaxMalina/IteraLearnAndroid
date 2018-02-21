@@ -1,6 +1,5 @@
 package com.learn.maksymgromov.learnui.Fragments;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +24,6 @@ import butterknife.ButterKnife;
 public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private RequestClient requestClient;
     private ArrayList<Car> mData;
-    private SearchListener mSearchListener;
     private DashboardAdapter mAdapter;
 
     @BindView(R.id.dashboard_recycler_view) RecyclerView mDashboardRecyclerView;
@@ -58,24 +56,15 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         new RequestTask().execute();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof SearchListener) {
-            mSearchListener = (SearchListener) context;
-        }
-    }
-
-    class RequestTask extends AsyncTask<String, Integer, String>  {
+    class RequestTask extends AsyncTask<String, Integer, ArrayList<Car>>  {
 
         @Override
-        protected String doInBackground(String... strings) {
-            return requestClient.getRequest();
+        protected ArrayList<Car> doInBackground(String... strings) {
+            return Utils.parseJsonStringToArrayListString(requestClient.getRequest());
         }
 
         @Override
-        protected void onPostExecute(String string) {
-            mData = Utils.parseJsonStringToArrayListString(string);
+        protected void onPostExecute(ArrayList<Car> mData) {
             mAdapter = new DashboardAdapter(mData);
             mDashboardRecyclerView.setAdapter(mAdapter);
 
@@ -87,7 +76,4 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         mAdapter.getFilter().filter(query);
     }
 
-    public interface SearchListener {
-        void onSearch();
-    }
 }

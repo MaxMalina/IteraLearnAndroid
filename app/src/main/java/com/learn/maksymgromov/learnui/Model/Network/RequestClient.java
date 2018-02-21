@@ -10,7 +10,9 @@ import retrofit2.Retrofit;
 
 public class RequestClient {
 
-    private  static  final String url = "http://172.16.33.213:3000";
+    private static final String TAG = RequestClient.class.getSimpleName();
+
+    private  static  final String url = "http://172.16.33.219:3000";
 
     private Retrofit retrofit;
 
@@ -26,7 +28,7 @@ public class RequestClient {
             Response response = retrofit.callFactory().newCall(request).execute();
             return response.body().string();
         } catch (IOException e) {
-            Log.e("MYREQUEST", "Unable connect to server");
+            Log.e(TAG, "Unable connect to server");
         }
         return "";
     }

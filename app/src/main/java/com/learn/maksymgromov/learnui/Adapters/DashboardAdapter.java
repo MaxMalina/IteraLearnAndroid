@@ -1,5 +1,6 @@
 package com.learn.maksymgromov.learnui.Adapters;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,14 +59,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 if (charString.isEmpty()) {
                     mCarsListFiltered = mCars;
                 } else {
-                    List<Car> filteredList = new ArrayList<>();
-                    for (Car car : mCars) {
-                        if (car.getModel().toLowerCase().contains(charString)) {
-                            filteredList.add(car);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        mCarsListFiltered = mCars.stream()
+                                            .filter(car -> car.getModel().toLowerCase().contains(charString))
+                                            .collect(Collectors.toList());
+                    } else {
+                        List<Car> filteredList = new ArrayList<>();
+                        for (Car car : mCars) {
+                            if (car.getModel().toLowerCase().contains(charString)) {
+                                filteredList.add(car);
+                            }
                         }
+                        mCarsListFiltered = filteredList;
                     }
-
-                    mCarsListFiltered = filteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();

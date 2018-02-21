@@ -1,5 +1,6 @@
 package com.learn.maksymgromov.learnui;
 
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,14 +17,13 @@ import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener, DashboardFragment.SearchListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     @BindView(R.id.message) TextView mTextMessage;
     @BindView(R.id.navigation) BottomNavigationViewEx navigation;
     @BindView(R.id.search) SearchView mSearchView;
 
-    private static final float NORMAL_SIZE = 24;
-    private static final float ACTIVE_SIZE = 31;
+    private BottomNavigationManager mNavigationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        initBottomNavigationViewEx();
+        mNavigationManager = new BottomNavigationManager(navigation);
+
+        mNavigationManager.initBottomNavigationView();
+        navigation.setOnNavigationItemSelectedListener(this);
+
         Fragment fragment = FragmentFactory.newInstance("HOME");
 
         getSupportFragmentManager().beginTransaction()
@@ -39,22 +43,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             .commit();
 
         mSearchView.setVisibility(View.INVISIBLE);
-
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                DashboardFragment dashboardFragment = (DashboardFragment) getCurrentFragment();
-                dashboardFragment.beginSearch(query);
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                onQueryTextSubmit(newText);
-                return false;
-            }
-        });
+        mSearchView.setOnQueryTextListener(this);
     }
 
     @Override
@@ -63,30 +52,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 mSearchView.setVisibility(View.INVISIBLE);
-                switchFragment(getResources().getString(R.string.title_home), getSupportFragmentManager());
+                switchFragment(getResources().getString(R.string.title_home));
                 item.setIcon(R.drawable.loyalty_active);
                 navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
                 navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
 
-                changeIconsSize(0);
+                mNavigationManager.changeIconSize(0);
                 return true;
             case R.id.navigation_dashboard:
                 mSearchView.setVisibility(View.VISIBLE);
-                switchFragment(getResources().getString(R.string.title_dashboard), getSupportFragmentManager());
+                switchFragment(getResources().getString(R.string.title_dashboard));
                 item.setIcon(R.drawable.wallet_active);
                 navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
                 navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
 
-                changeIconsSize(1);
+                mNavigationManager.changeIconSize(1);
                 return true;
             case R.id.navigation_notifications:
                 mSearchView.setVisibility(View.INVISIBLE);
-                switchFragment(getResources().getString(R.string.title_notifications), getSupportFragmentManager());
+                switchFragment(getResources().getString(R.string.title_notifications));
                 item.setIcon(R.drawable.more_actions_active);
                 navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
                 navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
 
-                changeIconsSize(2);
+                mNavigationManager.changeIconSize(2);
                 return true;
             default:
                 return false;
@@ -94,48 +83,50 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //return false;
     }
 
-    private void switchFragment(String itemTitle, FragmentManager fragmentManager) {
+    private void switchFragment(String itemTitle) {
         mTextMessage.setText(itemTitle);
 
         Fragment fragment = FragmentFactory.newInstance(itemTitle);
-        fragmentManager.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
 
-    private void initBottomNavigationViewEx() {
-        navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_active);
 
-        navigation.setIconSize(NORMAL_SIZE,NORMAL_SIZE);
-        navigation.setIconSizeAt(0, ACTIVE_SIZE, ACTIVE_SIZE);
-
-        navigation.enableAnimation(false);
-        navigation.enableShiftingMode(false);
-        navigation.enableItemShiftingMode(false);
-        navigation.setTextVisibility(false);
-        navigation.setItemIconTintList(null);
-
-        navigation.setOnNavigationItemSelectedListener(this);
-    }
-
-    private void changeIconsSize(int positionToActive) {
-        navigation.setIconSize(NORMAL_SIZE, NORMAL_SIZE);
-        navigation.setIconSizeAt(positionToActive, ACTIVE_SIZE, ACTIVE_SIZE);
-    }
-
-    @Override
-    public void onSearch() {
-
-    }
 
     private Fragment getCurrentFragment() {
         Fragment result = null;
-        for (Fragment f: getSupportFragmentManager().getFragments()) {
-            if(f != null && f.isVisible()) {
-                result = f;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            result = getSupportFragmentManager().getFragments().stream()
+                    .filter(Fragment::isVisible)
+                    .findFirst()
+                    .get();
+        } else {
+            for (Fragment f : getSupportFragmentManager().getFragments()) {
+                if (f != null && f.isVisible()) {
+                    result = f;
+                }
             }
         }
 
         return  result;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        makeSearch(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        makeSearch(newText);
+        return false;
+    }
+
+    private void makeSearch(String query){
+        DashboardFragment dashboardFragment = (DashboardFragment) getCurrentFragment();
+        dashboardFragment.beginSearch(query);
     }
 }
