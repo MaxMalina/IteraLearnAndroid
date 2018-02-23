@@ -5,11 +5,15 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
@@ -22,6 +26,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @BindView(R.id.message) TextView mTextMessage;
     @BindView(R.id.navigation) BottomNavigationViewEx navigation;
     @BindView(R.id.search) SearchView mSearchView;
+
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerToggle;
+    @BindView(R.id.my_toolbar) Toolbar toolbar;
+
 
     private BottomNavigationManager mNavigationManager;
 
@@ -44,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         mSearchView.setVisibility(View.INVISIBLE);
         mSearchView.setOnQueryTextListener(this);
+
+        setSupportActionBar(toolbar);
+
     }
 
     @Override
