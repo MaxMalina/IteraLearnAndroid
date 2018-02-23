@@ -1,6 +1,9 @@
 package com.learn.maksymgromov.learnui;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.my_toolbar) Toolbar toolbar;
+    @BindView(R.id.nav_view) NavigationView mNavigationView;
 
 
     private BottomNavigationManager mNavigationManager;
@@ -59,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
+        mNavigationView.setItemIconTintList(null);
     }
 
     @Override
