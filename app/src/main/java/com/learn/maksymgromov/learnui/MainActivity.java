@@ -25,7 +25,7 @@ import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, DrawerLayout.DrawerListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, DrawerLayout.DrawerListener, NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.message) TextView mTextMessage;
     @BindView(R.id.navigation) BottomNavigationViewEx navigation;
@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         mNavigationView.setItemIconTintList(null);
         mDrawerLayout.addDrawerListener(this);
+
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.getMenu().getItem(0).setIcon(R.drawable.loyalty_active_without_dot);
     }
 
     @Override
@@ -85,29 +88,40 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.navigation_home:
                 mSearchView.setVisibility(View.INVISIBLE);
                 switchFragment(getResources().getString(R.string.title_home));
-                item.setIcon(R.drawable.loyalty_active);
+                navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_active);
                 navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
                 navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
 
-                mNavigationManager.changeIconSize(0);
+                mNavigationView.getMenu().getItem(0).setIcon(R.drawable.loyalty_active_without_dot);
+                mNavigationView.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
+                mNavigationView.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
+                //mNavigationManager.changeIconSize(0);
                 return true;
             case R.id.navigation_dashboard:
                 mSearchView.setVisibility(View.VISIBLE);
                 switchFragment(getResources().getString(R.string.title_dashboard));
-                item.setIcon(R.drawable.wallet_active);
                 navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
+                navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_active);
                 navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
 
-                mNavigationManager.changeIconSize(1);
+
+                mNavigationView.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
+                mNavigationView.getMenu().getItem(1).setIcon(R.drawable.wallet_active_without_dot);
+                mNavigationView.getMenu().getItem(2).setIcon(R.drawable.more_actions_normal);
+                //mNavigationManager.changeIconSize(1);
                 return true;
             case R.id.navigation_notifications:
                 mSearchView.setVisibility(View.INVISIBLE);
                 switchFragment(getResources().getString(R.string.title_notifications));
-                item.setIcon(R.drawable.more_actions_active);
                 navigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
                 navigation.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
+                navigation.getMenu().getItem(2).setIcon(R.drawable.more_actions_active);
 
-                mNavigationManager.changeIconSize(2);
+
+                mNavigationView.getMenu().getItem(0).setIcon(R.drawable.loyalty_normal);
+                mNavigationView.getMenu().getItem(1).setIcon(R.drawable.wallet_normal);
+                mNavigationView.getMenu().getItem(2).setIcon(R.drawable.more_actions_active_without_dot);
+                //mNavigationManager.changeIconSize(2);
                 return true;
             default:
                 return false;

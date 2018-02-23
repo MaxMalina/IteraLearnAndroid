@@ -4,7 +4,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationManager {
     private static final float NORMAL_SIZE = 24;
-    private static final float ACTIVE_SIZE = 31;
+    private static final float ACTIVE_SIZE = 32;
 
     private BottomNavigationViewEx mNavigation;
 
@@ -12,15 +12,16 @@ public class BottomNavigationManager {
         mNavigation = bottomNavigationView;
     }
 
-    public void changeIconSize(int positionToActive) {
+    /*public void changeIconSize(int positionToActive) {
         mNavigation.setIconSize(NORMAL_SIZE, NORMAL_SIZE);
         mNavigation.setIconSizeAt(positionToActive, ACTIVE_SIZE, ACTIVE_SIZE);
-    }
+    }*/
 
     public void initBottomNavigationView() {
         mNavigation.getMenu().getItem(0).setIcon(R.drawable.loyalty_active);
 
-        changeIconSize(0);
+        //changeIconSize(0);
+        mNavigation.setIconSize(ACTIVE_SIZE, ACTIVE_SIZE);
 
         mNavigation.enableAnimation(false);
         mNavigation.enableShiftingMode(false);
