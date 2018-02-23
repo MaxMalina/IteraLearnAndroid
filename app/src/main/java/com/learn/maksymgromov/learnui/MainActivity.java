@@ -25,7 +25,7 @@ import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationViewEx.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, DrawerLayout.DrawerListener {
 
     @BindView(R.id.message) TextView mTextMessage;
     @BindView(R.id.navigation) BottomNavigationViewEx navigation;
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
         mNavigationView.setItemIconTintList(null);
+        mDrawerLayout.addDrawerListener(this);
     }
 
     @Override
@@ -159,5 +160,25 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private void makeSearch(String query){
         DashboardFragment dashboardFragment = (DashboardFragment) getCurrentFragment();
         dashboardFragment.beginSearch(query);
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+        navigation.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        navigation.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        navigation.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }
