@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @BindView(R.id.navigation) BottomNavigationViewEx navigation;
     @BindView(R.id.search) SearchView mSearchView;
 
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerToggle;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.my_toolbar) Toolbar toolbar;
 
 
@@ -55,6 +56,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         setSupportActionBar(toolbar);
 
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
