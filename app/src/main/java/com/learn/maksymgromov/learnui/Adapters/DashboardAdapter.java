@@ -119,7 +119,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Select The Action");
-            menu.add(Menu.NONE, IDM_CHANGE, Menu.NONE, "Change");
+            menu.add(mPosition, IDM_CHANGE, Menu.NONE, "Change");
             menu.add(mPosition, IDM_REMOVE, Menu.NONE, "Remove");
         }
     }

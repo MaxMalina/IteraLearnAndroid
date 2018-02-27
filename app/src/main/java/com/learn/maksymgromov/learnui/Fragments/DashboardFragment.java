@@ -1,5 +1,6 @@
 package com.learn.maksymgromov.learnui.Fragments;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.learn.maksymgromov.learnui.Adapters.DashboardAdapter;
@@ -89,10 +93,37 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
             case DashboardAdapter.DashboardHolder.IDM_CHANGE:
                 Toast toast = Toast.makeText(getContext(), "I want change smth, but i dont know what", Toast.LENGTH_LONG);
                 toast.show();
+
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.change_dialog);
+
+                ImageView imageView = dialog.findViewById(R.id.cancel_action);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                EditText editTextModel = dialog.findViewById(R.id.model);
+                EditText editTextSeries = dialog.findViewById(R.id.series);
+
+                Button button = dialog.findViewById(R.id.ok);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mData.get(item.getGroupId()).setModel(editTextModel.getText().toString());
+                        mData.get(item.getGroupId()).setSeries(editTextSeries.getText().toString());
+                        mAdapter = new DashboardAdapter(mData);
+                        mDashboardRecyclerView.setAdapter(mAdapter);
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
                 return true;
             case DashboardAdapter.DashboardHolder.IDM_REMOVE:
-                toast = Toast.makeText(getContext(), "Aaaaaaaa", Toast.LENGTH_LONG);
-                toast.show();
                 mData.remove(item.getGroupId());
                 mAdapter = new DashboardAdapter(mData);
                 mDashboardRecyclerView.setAdapter(mAdapter);
