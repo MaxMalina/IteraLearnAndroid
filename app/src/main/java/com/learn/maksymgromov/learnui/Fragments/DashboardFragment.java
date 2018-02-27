@@ -6,9 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.learn.maksymgromov.learnui.Adapters.DashboardAdapter;
 import com.learn.maksymgromov.learnui.Model.Car;
@@ -64,7 +69,8 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Car> mData) {
+        protected void onPostExecute(ArrayList<Car> data) {
+            mData = data;
             mAdapter = new DashboardAdapter(mData);
             mDashboardRecyclerView.setAdapter(mAdapter);
 
@@ -76,4 +82,22 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         mAdapter.getFilter().filter(query);
     }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case DashboardAdapter.DashboardHolder.IDM_CHANGE:
+                Toast toast = Toast.makeText(getContext(), "I want change smth, but i dont know what", Toast.LENGTH_LONG);
+                toast.show();
+                return true;
+            case DashboardAdapter.DashboardHolder.IDM_REMOVE:
+                toast = Toast.makeText(getContext(), "Aaaaaaaa", Toast.LENGTH_LONG);
+                toast.show();
+                mData.remove(item.getGroupId());
+                mAdapter = new DashboardAdapter(mData);
+                mDashboardRecyclerView.setAdapter(mAdapter);
+                return true;
+            default: return super.onContextItemSelected(item);
+        }
+    }
 }

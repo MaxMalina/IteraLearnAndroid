@@ -2,7 +2,10 @@ package com.learn.maksymgromov.learnui.Adapters;
 
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -10,6 +13,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
 import com.learn.maksymgromov.learnui.Model.Car;
 import com.learn.maksymgromov.learnui.R;
 import com.squareup.picasso.Picasso;
@@ -42,7 +46,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public void onBindViewHolder(DashboardHolder holder, int position) {
-        holder.bindCar(mCarsListFiltered.get(position));
+        holder.bindCar(mCarsListFiltered.get(position), position);
     }
 
     @Override
@@ -87,23 +91,36 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         };
     }
 
-    public class DashboardHolder extends RecyclerView.ViewHolder {
+    public class DashboardHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+
+        public static final int IDM_CHANGE = 101;
+        public static final int IDM_REMOVE = 102;
 
         @BindView(R.id.car_model) TextView mCarModelView;
         @BindView(R.id.car_series) TextView mCarSeriesView;
         @BindView(R.id.car_photo) ImageView mCarPhotoView;
 
+        private int mPosition;
+
         public DashboardHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnCreateContextMenuListener(this);
         }
 
-        public void bindCar(Car car) {
+        public void bindCar(Car car, int position) {
+            mPosition = position;
             mCarModelView.setText(car.getModel());
             mCarSeriesView.setText(car.getSeries());
 
             Picasso.with(mCarPhotoView.getContext()).load(car.getPhotoLink()).into(mCarPhotoView);
         }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Select The Action");
+            menu.add(Menu.NONE, IDM_CHANGE, Menu.NONE, "Change");
+            menu.add(mPosition, IDM_REMOVE, Menu.NONE, "Remove");
+        }
     }
 }
