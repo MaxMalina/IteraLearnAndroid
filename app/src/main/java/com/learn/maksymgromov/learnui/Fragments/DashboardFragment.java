@@ -20,19 +20,21 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.learn.maksymgromov.learnui.Adapters.DashboardAdapter;
+import com.learn.maksymgromov.learnui.ChangeDialog;
 import com.learn.maksymgromov.learnui.Model.Car;
 import com.learn.maksymgromov.learnui.Model.Network.RequestClient;
 import com.learn.maksymgromov.learnui.Model.Utils;
 import com.learn.maksymgromov.learnui.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RequestClient requestClient;
-    private ArrayList<Car> mData;
+    private List<Car> mData;
     private DashboardAdapter mAdapter;
 
     @BindView(R.id.dashboard_recycler_view) RecyclerView mDashboardRecyclerView;
@@ -91,42 +93,21 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         switch (item.getItemId())
         {
             case DashboardAdapter.DashboardHolder.IDM_CHANGE:
-                Toast toast = Toast.makeText(getContext(), "I want change smth, but i dont know what", Toast.LENGTH_LONG);
-                toast.show();
 
-                final Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.change_dialog);
-
-                ImageView imageView = dialog.findViewById(R.id.cancel_action);
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
+                ChangeDialog changeDialog = new ChangeDialog(getContext(), (model, series) -> {
+                    mData.get(item.getGroupId()).setModel(model);
+                    mData.get(item.getGroupId()).setSeries(model);
+                    mAdapter.setCars(mData);
+                    mAdapter.notifyDataSetChanged();
                 });
 
-                EditText editTextModel = dialog.findViewById(R.id.model);
-                EditText editTextSeries = dialog.findViewById(R.id.series);
-
-                Button button = dialog.findViewById(R.id.ok);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mData.get(item.getGroupId()).setModel(editTextModel.getText().toString());
-                        mData.get(item.getGroupId()).setSeries(editTextSeries.getText().toString());
-                        mAdapter = new DashboardAdapter(mData);
-                        mDashboardRecyclerView.setAdapter(mAdapter);
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
+                changeDialog.show();
 
                 return true;
             case DashboardAdapter.DashboardHolder.IDM_REMOVE:
                 mData.remove(item.getGroupId());
-                mAdapter = new DashboardAdapter(mData);
-                mDashboardRecyclerView.setAdapter(mAdapter);
+                mAdapter.setCars(mData);
+                mAdapter.notifyDataSetChanged();
                 return true;
             default: return super.onContextItemSelected(item);
         }

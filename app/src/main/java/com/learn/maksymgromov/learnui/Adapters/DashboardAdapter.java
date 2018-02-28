@@ -1,5 +1,6 @@
 package com.learn.maksymgromov.learnui.Adapters;
 
+import android.app.Activity;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -8,12 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.learn.maksymgromov.learnui.Fragments.DashboardFragment;
+import com.learn.maksymgromov.learnui.MainActivity;
 import com.learn.maksymgromov.learnui.Model.Car;
 import com.learn.maksymgromov.learnui.R;
 import com.squareup.picasso.Picasso;
@@ -30,9 +33,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     private List<Car> mCars;
     private List<Car> mCarsListFiltered;
 
-    public DashboardAdapter (ArrayList<Car> data) {
+    public DashboardAdapter (List<Car> data) {
         mCars = data;
         mCarsListFiltered = data;
+    }
+
+    public void setCars(List<Car> cars) {
+        mCars = cars;
+        mCarsListFiltered = cars;
     }
 
     @Override
@@ -46,7 +54,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public void onBindViewHolder(DashboardHolder holder, int position) {
-        holder.bindCar(mCarsListFiltered.get(position), position);
+        holder.bindCar(mCarsListFiltered.get(position));
     }
 
     @Override
@@ -100,16 +108,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         @BindView(R.id.car_series) TextView mCarSeriesView;
         @BindView(R.id.car_photo) ImageView mCarPhotoView;
 
-        private int mPosition;
-
         public DashboardHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnCreateContextMenuListener(this);
         }
 
-        public void bindCar(Car car, int position) {
-            mPosition = position;
+        public void bindCar(Car car) {
             mCarModelView.setText(car.getModel());
             mCarSeriesView.setText(car.getSeries());
 
@@ -119,8 +124,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Select The Action");
-            menu.add(mPosition, IDM_CHANGE, Menu.NONE, "Change");
-            menu.add(mPosition, IDM_REMOVE, Menu.NONE, "Remove");
+            menu.add(getAdapterPosition(), IDM_CHANGE, Menu.NONE, "Change");
+            menu.add(getAdapterPosition(), IDM_REMOVE, Menu.NONE, "Remove");
         }
     }
 }

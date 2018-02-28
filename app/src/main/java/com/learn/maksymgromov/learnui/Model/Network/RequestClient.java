@@ -12,7 +12,7 @@ public class RequestClient {
 
     private static final String TAG = RequestClient.class.getSimpleName();
 
-    private  static  final String url = "http://172.16.33.132:3000";
+    private  static  final String url = "http://172.16.33.171:3000";
 
     private Retrofit retrofit;
 
