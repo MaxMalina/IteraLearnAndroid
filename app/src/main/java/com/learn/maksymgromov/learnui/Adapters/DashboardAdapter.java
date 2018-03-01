@@ -103,6 +103,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
         public static final int IDM_CHANGE = 101;
         public static final int IDM_REMOVE = 102;
+        public static final int IDM_ADD = 103;
 
         @BindView(R.id.car_model) TextView mCarModelView;
         @BindView(R.id.car_series) TextView mCarSeriesView;
@@ -126,6 +127,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             menu.setHeaderTitle("Select The Action");
             menu.add(getAdapterPosition(), IDM_CHANGE, Menu.NONE, "Change");
             menu.add(getAdapterPosition(), IDM_REMOVE, Menu.NONE, "Remove");
+            menu.add(getAdapterPosition(), IDM_ADD, Menu.NONE, "Add");
         }
     }
 }

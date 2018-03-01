@@ -20,8 +20,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.learn.maksymgromov.learnui.Adapters.DashboardAdapter;
+import com.learn.maksymgromov.learnui.AddDialog;
 import com.learn.maksymgromov.learnui.ChangeDialog;
 import com.learn.maksymgromov.learnui.Model.Car;
+import com.learn.maksymgromov.learnui.Model.CarRepository;
 import com.learn.maksymgromov.learnui.Model.Network.RequestClient;
 import com.learn.maksymgromov.learnui.Model.Utils;
 import com.learn.maksymgromov.learnui.R;
@@ -33,9 +35,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private RequestClient requestClient;
     private List<Car> mData;
     private DashboardAdapter mAdapter;
+    private CarRepository carRepository;
 
     @BindView(R.id.dashboard_recycler_view) RecyclerView mDashboardRecyclerView;
     @BindView(R.id.dashboard_layout) SwipeRefreshLayout mSwipeRefreshLayout;
@@ -53,29 +55,40 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
 
         mDashboardRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        requestClient = new RequestClient();
+        carRepository = new CarRepository(getContext());
+
         new RequestTask().execute();
 
         return view;
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        carRepository.open();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        carRepository.close();
+    }
+
+    @Override
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
-
-        requestClient = new RequestClient();
         new RequestTask().execute();
     }
 
-    class RequestTask extends AsyncTask<String, Integer, ArrayList<Car>>  {
+    class RequestTask extends AsyncTask<String, Integer, List<Car>>  {
 
         @Override
-        protected ArrayList<Car> doInBackground(String... strings) {
-            return Utils.parseJsonStringToArrayListString(requestClient.getRequest());
+        protected List<Car> doInBackground(String... strings) {
+            return carRepository.getAllItems();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Car> data) {
+        protected void onPostExecute(List<Car> data) {
             mData = data;
             mAdapter = new DashboardAdapter(mData);
             mDashboardRecyclerView.setAdapter(mAdapter);
@@ -109,6 +122,18 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
                 mAdapter.setCars(mData);
                 mAdapter.notifyDataSetChanged();
                 return true;
+
+            case DashboardAdapter.DashboardHolder.IDM_ADD:
+
+                AddDialog addDialog = new AddDialog(getContext(), car -> {
+                    mData.add(car);
+                    mAdapter.setCars(mData);
+                    mAdapter.notifyDataSetChanged();
+                    carRepository.add(car);
+                });
+                addDialog.show();
+                return true;
+
             default: return super.onContextItemSelected(item);
         }
     }

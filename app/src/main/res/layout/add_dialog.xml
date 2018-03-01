@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="500dp">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="500dp">
+
+    <EditText
+        android:id = "@+id/vin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new vin"/>
+
+    <EditText
+        android:id = "@+id/style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new style"/>
+
+    <EditText
+        android:id = "@+id/model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new model"/>
+
+    <EditText
+        android:id = "@+id/series"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new series"/>
+
+    <EditText
+        android:id = "@+id/engineLitres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new engine litres"/>
+
+    <EditText
+        android:id = "@+id/fuelType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new fuel type"/>
+
+    <EditText
+        android:id = "@+id/driveLineType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new drive line type"/>
+
+    <EditText
+        android:id = "@+id/color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new color"/>
+
+    <EditText
+        android:id = "@+id/photoLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:hint="Enter new photo link"/>
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:textSize="28sp"
+        android:background="#fff"/>
+
+</LinearLayout>
+</ScrollView>

@@ -1,5 +1,7 @@
 package com.learn.maksymgromov.learnui.Model;
 
+import android.database.Cursor;
+
 import com.google.gson.internal.LinkedTreeMap;
 import com.learn.maksymgromov.learnui.Model.CarAttributes.BodyStyle;
 import com.learn.maksymgromov.learnui.Model.CarAttributes.DriveLineType;
@@ -45,6 +47,22 @@ public class Car implements Serializable {
         car.setDriveLineType(DriveLineType.valueOf(linkedTreeMap.get("driveLineType")));
         car.setColor(linkedTreeMap.get("color"));
         car.setPhotoLink(linkedTreeMap.get("photoLink"));
+
+        return car;
+    }
+
+    public static Car convertToCar(Cursor cursor) {
+        Car car = new Car();
+
+        car.setVin(cursor.getString(0));
+        car.setStyle(BodyStyle.valueOf(cursor.getString(1)));
+        car.setModel(cursor.getString(2));
+        car.setSeries(cursor.getString(3));
+        car.setEngineLiters(cursor.getDouble(4));
+        car.setFuelType(FuelType.valueOf(cursor.getString(5)));
+        car.setDriveLineType(DriveLineType.valueOf(cursor.getString(6)));
+        car.setColor(cursor.getString(7));
+        car.setPhotoLink(cursor.getString(8));
 
         return car;
     }
